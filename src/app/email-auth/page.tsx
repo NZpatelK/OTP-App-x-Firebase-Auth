@@ -42,7 +42,7 @@ export default function EmailLogin() {
           type="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {setEmail(e.target.value); setMessage('')}}
           className="border p-2 rounded w-full mb-4 bg-gray-100 text-gray-800"
         />
         <button
