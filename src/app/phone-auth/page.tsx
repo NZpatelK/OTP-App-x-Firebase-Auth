@@ -9,6 +9,7 @@ import SixDigitCodeInput from '../components/sixDigitCodeInput'
 export default function PhoneLogin() {
   const [phone, setPhone] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [confirmationResult, setConfirmationResult] = useState<any>(null)
   const [message, setMessage] = useState('')
   const router = useRouter()
@@ -45,15 +46,20 @@ export default function PhoneLogin() {
     }
 
     try {
+      setIsSubmitting(true)
+      setLoading(true)
       const result = await signInWithPhoneNumber(auth, sanitizedPhone, window.recaptchaVerifier)
       setConfirmationResult(result)
-      setIsSubmitting(true)
       setMessage('Verification code sent to your phone.')
     } catch (err: any) {
       console.error('Error sending code:', err)
       setMessage('Failed to send code. Please try again later.')
     }
+    finally {
+      setLoading(false)
+    }
   }
+
 
   const verifyCode = async (code: string) => {
     if (!confirmationResult) {
@@ -80,6 +86,12 @@ export default function PhoneLogin() {
           {isSubmitting ? 'Enter Verification Code' : 'Sign in with Phone'}
         </h1>
 
+        {loading && (
+          <p className="text-gray-600 text-lg text-center">
+            Please wait while we verify your phone number.
+          </p>
+        )}
+
         {!isSubmitting && (
           <div className="flex flex-col max-w-md">
             <input
@@ -98,7 +110,7 @@ export default function PhoneLogin() {
           </div>
         )}
 
-        {isSubmitting && (
+        {isSubmitting && !loading && (
           <SixDigitCodeInput verifyCode={verifyCode} />
         )}
 
