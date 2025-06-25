@@ -76,24 +76,43 @@ export default function Welcome() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-green-50 text-center px-4">
-      <h1 className="text-3xl font-bold mb-4 text-green-800">Welcome!</h1>
-      <p className="text-lg text-gray-700">You are now logged in.</p>
-      {!loading && isUser && <p className="text-sm text-gray-500 mt-2">
-        Hello, {user?.name}
-      </p>}
-      {!loading && !isUser &&
-        <div>
-          <p className="text-lg text-gray-700">Please enter your name:</p>
-          <input type="text" placeholder="Enter your name" value={user?.name} onChange={handleChangeUserName}  className="border border-gray-300 rounded px-2 py-1 mt-4" />
-          <button className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" onClick={addUser}>Submit</button>
-        </div>}
-      <button
-        onClick={handleLogout}
-        className="mt-6 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-      >
-        Logout
-      </button>
+    <main className="flex items-center justify-center min-h-screen bg-blue-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 text-center">
+        <h1 className="text-3xl font-bold mb-4 text-green-800">Welcome!</h1>
+        {!loading && isUser && (
+          <p className="text-2xl text-gray-800">Hello, {user?.name}</p>
+        )}
+        <p className="text-lg text-gray-700">You are now logged in.</p>
+        {!loading && !isUser && (
+          <div className="mt-4">
+            <p className="text-lg text-gray-700">Please enter your name:</p>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={user?.name}
+              onChange={handleChangeUserName}
+              className="border border-gray-300 rounded px-3 py-2 mt-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700" 
+            />
+            <button
+              className="mt-4 px-4 py-2 w-full bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={() => {
+                addUser()
+                setIsUser(true)
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        )}
+       {!loading && isUser && <button
+          onClick={handleLogout}
+          className="mt-6 px-4 py-2 w-full bg-red-600 text-white rounded hover:bg-red-700 text-lg font-semibold transition ease-in-out duration-300" 
+        >
+          Logout
+        </button>}
+      </div>
     </main>
+
+
   )
 }

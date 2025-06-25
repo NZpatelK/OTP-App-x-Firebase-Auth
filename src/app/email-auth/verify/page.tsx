@@ -30,6 +30,7 @@ export default function EmailVerify() {
       } else {
         setMessage('Invalid or expired sign-in link.')
         setLoading(false)
+        setTimeout(() => router.push('/'), 2000)
       }
     }
 
@@ -46,6 +47,7 @@ export default function EmailVerify() {
     } catch (error) {
       console.error('Sign-in error:', error)
       setMessage('Sign-in failed. Please try again.')
+      setTimeout(() => router.push('/'), 2000)
     } finally {
       setLoading(false)
     }
@@ -66,14 +68,14 @@ export default function EmailVerify() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-100 text-center">
-      <p className="text-lg text-gray-800 mb-4">{message}</p>
+      <p className="text-lg text-gray-800 mb-4 font-semibold capitalize">{message}</p>
 
       {needsEmail && (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-sm">
           <input
             type="email"
             placeholder="Enter your email"
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-gray-800" 
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
             required
