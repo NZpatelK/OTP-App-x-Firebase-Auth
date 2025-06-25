@@ -27,7 +27,7 @@ export default function EmailLogin() {
       await sendSignInLinkToEmail(auth, sanitizedEmail, actionCodeSettings)
       window.localStorage.setItem('emailForSignIn', sanitizedEmail)
       setMessage('Magic link sent! Please check your email.')
-      setTimeout(() => router.push('/email-auth/verify'), 1500)
+      setTimeout(() => router.push('/'), 1500)
     } catch (error) {
       console.error('Send link error:', error)
       setMessage('Failed to send magic link. Please try again later.')

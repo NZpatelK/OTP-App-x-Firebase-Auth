@@ -4,16 +4,32 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '@/app/lib/firebase'
+import { User } from '../lib/userData'
 
 export default function Welcome() {
-  const [userUID, setUserUID] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
+  async function fetchUsers() {
+    const response = await fetch('/api/users')
+    const data = await response.json()
+    return data
+  }
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUserUID(user.uid)
+        const userData = await fetchUsers()
+        const userUid = user.uid
+
+        if (userData) {
+          const user = userData.find((user: User) => user.id === userUid)
+          if (user) {
+            setUserName(user.name)
+          }
+        }
+
         setLoading(false)
       } else {
         // Not logged in → redirect to home/login
@@ -43,7 +59,7 @@ export default function Welcome() {
       <h1 className="text-3xl font-bold mb-4 text-green-800">Welcome!</h1>
       <p className="text-lg text-gray-700">You are now logged in.</p>
       <p className="text-sm text-gray-500 mt-2">
-        Your UID: <code>{userUID}</code>
+        Hello, {userName}
       </p>
       <button
         onClick={handleLogout}
