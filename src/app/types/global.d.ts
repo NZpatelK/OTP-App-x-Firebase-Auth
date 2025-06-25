@@ -2,7 +2,7 @@ export {};
 
 declare global {
   interface Window {
-    recaptchaVerifier: firebase.auth.RecaptchaVerifier;
+    recaptchaVerifier: firebase.auth.RecaptchaVerifier | any;
   }
 }
 

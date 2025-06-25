@@ -7,27 +7,35 @@ import { useRouter } from 'next/navigation'
 
 export default function EmailLogin() {
   const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
   const router = useRouter()
 
   const actionCodeSettings = {
-    url: `${window.location.origin}/email-auth/verify`, // where user returns after clicking magic link
+    url: `${window.location.origin}/email-auth/verify`,
     handleCodeInApp: true,
   }
 
   const handleSendLink = async () => {
+    const sanitizedEmail = email.trim().toLowerCase()
+
+    if (!sanitizedEmail || !sanitizedEmail.includes('@')) {
+      setMessage('Please enter a valid email address.')
+      return
+    }
+
     try {
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings)
-      window.localStorage.setItem('emailForSignIn', email)
-      alert('Magic link sent! Please check your email.')
-      router.push('/email-auth/verify')
-    } catch (error: any) {
-      alert(error.message)
+      await sendSignInLinkToEmail(auth, sanitizedEmail, actionCodeSettings)
+      window.localStorage.setItem('emailForSignIn', sanitizedEmail)
+      setMessage('Magic link sent! Please check your email.')
+      setTimeout(() => router.push('/email-auth/verify'), 1500)
+    } catch (error) {
+      console.error('Send link error:', error)
+      setMessage('Failed to send magic link. Please try again later.')
     }
   }
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-100">
-
       <div className="border shadow-lg rounded-lg p-6 bg-white w-full max-w-md">
         <h1 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Sign In with Email</h1>
         <input
@@ -43,8 +51,10 @@ export default function EmailLogin() {
         >
           Send Magic Link
         </button>
+        {message && (
+          <p className="mt-4 text-sm text-gray-700 text-center">{message}</p>
+        )}
       </div>
     </main>
-
   )
 }
