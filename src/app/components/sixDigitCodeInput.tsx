@@ -59,7 +59,7 @@ export default function SixDigitCodeInput({ verifyCode }: SixDigitCodeInputProps
                         value={digit}
                         onChange={(e) => handleChange(e, idx)}
                         onKeyDown={(e) => handleKeyDown(e, idx)}
-                        ref={(el) => (inputsRef.current[idx] = el)}
+                        ref={(el) => { inputsRef.current[idx] = el; }}
                         onPaste={handlePaste}
                         autoComplete="one-time-code"
                     />
