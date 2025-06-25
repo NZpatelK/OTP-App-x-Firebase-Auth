@@ -27,20 +27,24 @@ export default function EmailLogin() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-100">
-      <h1 className="text-2xl font-semibold mb-6 text-gray-800">Passwordless Email Login</h1>
-      <input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded w-full max-w-md mb-4 bg-gray-200 text-gray-800" 
-      />
-      <button
-        onClick={handleSendLink}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Send Magic Link
-      </button>
+
+      <div className="border shadow-lg rounded-lg p-6 bg-white w-full max-w-md">
+        <h1 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Sign In with Email</h1>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 rounded w-full mb-4 bg-gray-100 text-gray-800"
+        />
+        <button
+          onClick={handleSendLink}
+          className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700"
+        >
+          Send Magic Link
+        </button>
+      </div>
     </main>
+
   )
 }
