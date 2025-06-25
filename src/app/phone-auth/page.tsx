@@ -8,7 +8,7 @@ import SixDigitCodeInput from '../components/sixDigitCodeInput'
 
 export default function PhoneLogin() {
   const [phone, setPhone] = useState('')
-  const [code, setCode] = useState('')
+  // const [code, setCode] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [confirmationResult, setConfirmationResult] = useState<any>(null)
   const router = useRouter()
@@ -33,12 +33,14 @@ export default function PhoneLogin() {
     }
   }
 
-  const verifyCode = async () => {
+  const verifyCode = async (verifyCode: string) => {
     try {
-      await confirmationResult.confirm(code)
+      const intCode = parseInt(verifyCode)
+      await confirmationResult.confirm(intCode)
       router.push(`/welcome`)
     } catch (err: any) {
       alert('Invalid code')
+      alert(err.message)
     }
   }
 
@@ -62,7 +64,7 @@ export default function PhoneLogin() {
           </button>
         </div>}
 
-        {isSubmitting && <SixDigitCodeInput verifyCode={(e) => setCode(e)} />
+        {isSubmitting && <SixDigitCodeInput verifyCode={(e) => verifyCode(e)} />
         // <div className="flex flex-col max-w-md flex flex-col">
         //   <input
         //     type="text"

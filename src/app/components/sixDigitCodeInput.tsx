@@ -10,7 +10,7 @@ export default function SixDigitCodeInput({ verifyCode }: SixDigitCodeInputProps
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, idx: number) => {
         const val = e.target.value;
-        if (!/^\d?$/.test(val)) return; // only allow single digit or empty
+        if (!/^\d?$/.test(val)) return;
 
         const newCode = [...code];
         newCode[idx] = val;
