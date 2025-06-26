@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { auth } from '@/app/lib/firebase'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
-import SixDigitCodeInput from '../components/sixDigitCodeInput'
+import SixDigitCodeInput from '@/app/components/SixDigitCodeInput'
 import Modal from '../components/Modal'
 
 export default function PhoneLogin() {
