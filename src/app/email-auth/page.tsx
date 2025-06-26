@@ -4,10 +4,12 @@ import { useState } from 'react'
 import { auth } from '@/app/lib/firebase'
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
+import Modal from '../components/Modal'
 
 export default function EmailLogin() {
+  const [isModalOpen, setIsModalOpen] = useState(true)
   const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('Enter your email to receive a magic link.')
   const router = useRouter()
 
   const actionCodeSettings = {
@@ -20,6 +22,7 @@ export default function EmailLogin() {
 
     if (!sanitizedEmail || !sanitizedEmail.includes('@')) {
       setMessage('Please enter a valid email address.')
+      setIsModalOpen(true)
       return
     }
 
@@ -27,10 +30,12 @@ export default function EmailLogin() {
       await sendSignInLinkToEmail(auth, sanitizedEmail, actionCodeSettings)
       window.localStorage.setItem('emailForSignIn', sanitizedEmail)
       setMessage('Magic link sent! Please check your email.')
-      setTimeout(() => router.push('/home'), 1500)
+      setIsModalOpen(true)
+      setTimeout(() => router.push('/home'), 2000)
     } catch (error) {
       console.error('Send link error:', error)
       setMessage('Failed to send magic link. Please try again later.')
+      setIsModalOpen(true)
     }
   }
 
@@ -42,7 +47,7 @@ export default function EmailLogin() {
           type="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e) => {setEmail(e.target.value); setMessage('')}}
+          onChange={(e) => { setEmail(e.target.value); setMessage('') }}
           className="border p-2 rounded w-full mb-4 bg-gray-100 text-gray-800"
         />
         <button
@@ -51,10 +56,18 @@ export default function EmailLogin() {
         >
           Send Magic Link
         </button>
-        {message && (
-          <p className="mt-4 text-sm text-gray-700 text-center">{message}</p>
-        )}
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="p-2 text-center">
+          <h2 className="text-lg mb-6 text-gray-800">{message}</h2>
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="bg-blue-600 text-white px-4 py-2 w-full rounded hover:bg-blue-700"
+          >
+            Close
+          </button>
+        </div>
+      </Modal>
     </main>
   )
 }

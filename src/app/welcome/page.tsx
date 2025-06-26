@@ -78,7 +78,7 @@ export default function Welcome() {
   return (
     <main className="flex items-center justify-center min-h-screen bg-blue-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 text-center">
-        <h1 className="text-3xl font-bold mb-4 text-green-800">Welcome!</h1>
+        <h1 className="text-3xl font-bold mb-4 text-blue-800">Welcome!</h1>
         {!loading && isUser && (
           <p className="text-2xl text-gray-800">Hello, {user?.name}</p>
         )}

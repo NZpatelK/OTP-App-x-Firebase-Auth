@@ -8,12 +8,12 @@ import SixDigitCodeInput from '../components/sixDigitCodeInput'
 import Modal from '../components/Modal'
 
 export default function PhoneLogin() {
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [phone, setPhone] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [confirmationResult, setConfirmationResult] = useState<any>(null)
-  const [message, setMessage] = useState('Please enter your phone number to receive a verification code.')
+  const [message, setMessage] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function PhoneLogin() {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
         size: 'invisible',
         callback: (response: any) => {
-          console.log('reCAPTCHA solved')
+          console.log('reCAPTCHA solved', response)
         },
         'expired-callback': () => {
           console.warn('reCAPTCHA expired, resetting...')
@@ -54,6 +54,7 @@ export default function PhoneLogin() {
       const result = await signInWithPhoneNumber(auth, sanitizedPhone, window.recaptchaVerifier)
       setConfirmationResult(result)
       setMessage('Verification code sent to your phone.')
+      setIsModalOpen(true)
     } catch (err: any) {
       console.error('Error sending code:', err)
       setMessage('Failed to send code. Please try again later.')
@@ -76,6 +77,7 @@ export default function PhoneLogin() {
     try {
       const trimmedCode = code.trim()
       const result = await confirmationResult.confirm(trimmedCode)
+      console.log('Verification successful:', result)
       setMessage('Login successful! Redirecting...')
       router.push('/welcome')
     } catch (err: any) {
