@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import Modal from '../components/Modal'
 
 export default function EmailLogin() {
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('Enter your email to receive a magic link.')
   const router = useRouter()
